@@ -1,0 +1,11 @@
+#container {
+    background-color: #4caf50;
+    width: 600px;
+    margin: 50px auto;
+}
+#panel {
+    position: relative;
+    height: 500px;
+    width: 600px;
+    background-color: #e3f2fd;
+}
