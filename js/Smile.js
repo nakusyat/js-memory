@@ -1,4 +1,4 @@
-var Smile = function(img_width, img_height, x_position, y_position, img_src, img_cover, open_status, guessed_status) {
+var Smile = function(img_width, img_height, x_position, y_position, img_src, img_cover, guessed_status) {
 
     this.x_pos = x_position;
     this.y_pos = y_position;
@@ -7,7 +7,6 @@ var Smile = function(img_width, img_height, x_position, y_position, img_src, img
     this.img = document.createElement('img');
     this.img_src = img_src;
     this.img_cover = img_cover;
-    this.open = open_status;
     this.guessed = guessed_status;
 
     this.init = function(){
@@ -32,14 +31,6 @@ var Smile = function(img_width, img_height, x_position, y_position, img_src, img
         this.img.src = this.img_cover;
          this.img.style.backgroundColor = 'transparent';
         $(this.img).transition({ opacity: 1 });
-    };
-
-    this.set_card_open_status = function (open_status) {
-        this.open = open_status;
-    };
-
-    this.get_card_open_status = function(){
-        return this.open;
     };
 
     this.set_guessed_status = function (guessed_status) {

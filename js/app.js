@@ -59,44 +59,42 @@ var createSmile = function(x_position, y_position, img_src) {
 };
 
 var smileOnClickStep = function(smile) {
-                if(!smile.get_guessed_status()) {
-                        smile.set_card_open_status(true);
-                        smile.set_img_src();
+    if(!smile.get_guessed_status()) {
+        smile.set_img_src();
+        if(!last_active_smile.hasOwnProperty('x_pos')) {
+            last_active_smile = smile;
+            console.log('first');
+        } else if(last_active_smile.hasOwnProperty('x_pos') && !pre_last_active_smile.hasOwnProperty('x_pos') && !Object.is(last_active_smile, smile) && smile.img_src === last_active_smile.img_src) {
+            last_active_smile.set_guessed_status(true);
+            last_active_smile = {};
+            pre_last_active_smile = {};
+            open_element_count += 2;
+            console.log('second');
+        } else if(last_active_smile.hasOwnProperty('x_pos') && !pre_last_active_smile.hasOwnProperty('x_pos') && !Object.is(last_active_smile, smile) && smile.img_src !== last_active_smile.img_src) {
+            pre_last_active_smile = last_active_smile;
+            last_active_smile = smile;
+            console.log('third');
+        } else if(last_active_smile.hasOwnProperty('x_pos') && pre_last_active_smile.hasOwnProperty('x_pos') && !Object.is(last_active_smile, pre_last_active_smile) && pre_last_active_smile.img_src !== last_active_smile.img_src) {
+            if(Object.is(last_active_smile, smile)) {
+                pre_last_active_smile.set_img_cover();
+                pre_last_active_smile = {};
+            } else if(Object.is(pre_last_active_smile, smile)) {
+                last_active_smile.set_img_cover();
+                last_active_smile = pre_last_active_smile;
+                pre_last_active_smile = {};
+            } else {
+                pre_last_active_smile.set_img_cover();
+                last_active_smile.set_img_cover();
+                pre_last_active_smile = {};
+                last_active_smile = smile;
+            }
+            console.log('fourth');
+        }
 
-                        if(!pre_last_active_smile.hasOwnProperty('x_pos') && last_active_smile.hasOwnProperty('x_pos') && !Object.is(last_active_smile, smile) && last_active_smile.img_src === smile.img_src) {
-                            last_active_smile.set_guessed_status(true);
-                            smile.set_guessed_status(true);
-                            last_active_smile = {};
-                            pre_last_active_smile = {};
-                            open_element_count += 2;
-                        } else if(last_active_smile.hasOwnProperty('x_pos') && pre_last_active_smile.hasOwnProperty('x_pos') && last_active_smile.img_src !== pre_last_active_smile.img_src) {
-                            if(Object.is(pre_last_active_smile, smile)) {
-                            last_active_smile.set_card_open_status(false);
-                            last_active_smile.set_img_cover();
-                            } else if(Object.is(last_active_smile, smile)) {
-                                pre_last_active_smile.set_card_open_status(false);
-                                pre_last_active_smile.set_img_cover();
-                                pre_last_active_smile = {};
-                            } else {
-                                pre_last_active_smile.set_img_cover();
-                                pre_last_active_smile.set_card_open_status(false);
-                                pre_last_active_smile = {};
-                                last_active_smile.set_img_cover();
-                                last_active_smile.set_card_open_status(false);
-                            }
-                            last_active_smile = smile;
-
-                        } else if(last_active_smile.hasOwnProperty('x_pos') && !Object.is(last_active_smile, smile) && last_active_smile.img_src !== smile.img_src) {
-                            pre_last_active_smile = last_active_smile;
-                            last_active_smile = smile;
-                        }  else {
-                            last_active_smile = smile;
-                        }
-
-                        if(open_element_count === smiles.length) {
-                            alert('Congratulations');
-                        }
-                }
+        if(open_element_count === smiles.length) {
+            alert('Congratulations');
+        }
+    }
 };
 var getRandomInt = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
