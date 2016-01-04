@@ -40,4 +40,5 @@ var Smile = function(img_width, img_height, x_position, y_position, img_src, img
     this.get_guessed_status = function(){
         return this.guessed;
     };
+    this.init();
 };

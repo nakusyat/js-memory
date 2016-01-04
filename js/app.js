@@ -13,7 +13,6 @@ var app = angular.module('memory', [ ]);
     app.controller('PanelController', function($scope) {
         this.initMemory = function(){
             initSmileys();
-            console.log(smiles);
         };
     });
 
@@ -50,7 +49,6 @@ var smileyValidation = function(val, arr) {
 
 var createSmile = function(x_position, y_position, img_src) {
     var smile = new Smile(smile_width, smile_height, x_position, y_position, img_src, img_cover, false);
-        smile.init();
         smile.img.onclick = function() {
             smileOnClickStep(smile);
         };
@@ -63,17 +61,15 @@ var smileOnClickStep = function(smile) {
         smile.set_img_src();
         if(!last_active_smile.hasOwnProperty('x_pos')) {
             last_active_smile = smile;
-            console.log('first');
         } else if(last_active_smile.hasOwnProperty('x_pos') && !pre_last_active_smile.hasOwnProperty('x_pos') && !Object.is(last_active_smile, smile) && smile.img_src === last_active_smile.img_src) {
             last_active_smile.set_guessed_status(true);
+            smile.set_guessed_status(true);
             last_active_smile = {};
             pre_last_active_smile = {};
             open_element_count += 2;
-            console.log('second');
         } else if(last_active_smile.hasOwnProperty('x_pos') && !pre_last_active_smile.hasOwnProperty('x_pos') && !Object.is(last_active_smile, smile) && smile.img_src !== last_active_smile.img_src) {
             pre_last_active_smile = last_active_smile;
             last_active_smile = smile;
-            console.log('third');
         } else if(last_active_smile.hasOwnProperty('x_pos') && pre_last_active_smile.hasOwnProperty('x_pos') && !Object.is(last_active_smile, pre_last_active_smile) && pre_last_active_smile.img_src !== last_active_smile.img_src) {
             if(Object.is(last_active_smile, smile)) {
                 pre_last_active_smile.set_img_cover();
@@ -88,7 +84,6 @@ var smileOnClickStep = function(smile) {
                 pre_last_active_smile = {};
                 last_active_smile = smile;
             }
-            console.log('fourth');
         }
 
         if(open_element_count === smiles.length) {
